@@ -67,6 +67,18 @@
           >Rh</a
         >
         <a
+          class="nav-link"
+          [routerLink]="['ttccalculator']"
+          routerLinkActive="active text-primary"
+          >ttccalculator
+      </a>
+        <a 
+          class="nav-link"
+          [routerLink]="['colorinput']"
+          routerLinkActive="active text-primary"
+          >colorinput
+          </a>
+        <a
           *ngIf="!authService.isAuthenticated()"
           class="nav-link"
           [routerLink]="['login']"
