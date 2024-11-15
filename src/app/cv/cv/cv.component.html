@@ -1,12 +1,14 @@
 <div class="row">
   <div class="col">
     <div class="alert alert-warning">
-      {{ date | date : "full" | uppercase }}
+      {{ date | date: 'full' | uppercase }}
     </div>
-    <app-list [cvs]="cvs"></app-list>
+    <!-- Pass the observable `cvs$` using async pipe -->
+    <app-list [cvs]="cvs$ | async"></app-list>
   </div>
   <div class="col">
-    <app-cv-card [cv]="selectedCv"></app-cv-card>
+    <!-- Pass the observable `selectedCv$` using async pipe -->
+    <app-cv-card *ngIf="selectedCv$ | async as selectedCv" [cv]="selectedCv"></app-cv-card>
   </div>
 </div>
 <app-embauche></app-embauche>
