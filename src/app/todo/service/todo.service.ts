@@ -1,8 +1,6 @@
-import { Injectable, inject } from '@angular/core';
-import { Todo } from '../model/todo';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { Todo, TodoStatus } from '../model/todo';
 import { LoggerService } from '../../services/logger.service';
-
-let n = 1;
 
 @Injectable({
   providedIn: 'root',
@@ -10,46 +8,71 @@ let n = 1;
 export class TodoService {
   private loggerService = inject(LoggerService);
 
-  private todos: Todo[] = [];
+  // Signal to store all todos
+  private todosSignal = signal<Todo[]>([]);
+
+  // Computed signals for todos filtered by status
+  waitingTodos = computed(() =>
+    this.todosSignal().filter((todo) => todo.status === 'waiting')
+  );
+
+  inProgressTodos = computed(() =>
+    this.todosSignal().filter((todo) => todo.status === 'in progress')
+  );
+
+  doneTodos = computed(() =>
+    this.todosSignal().filter((todo) => todo.status === 'done')
+  );
 
   /**
-   * elle retourne la liste des todos
-   *
-   * @returns Todo[]
+   * Returns all todos as a regular array
    */
   getTodos(): Todo[] {
-    return this.todos;
+    return this.todosSignal();
   }
 
   /**
-   *Elle permet d'ajouter un todo
-   *
-   * @param todo: Todo
-   *
+   * Adds a new Todo with default status ('waiting')
    */
   addTodo(todo: Todo): void {
-    this.todos.push(todo);
+    this.todosSignal.update((todos) => [...todos, todo]);
   }
 
   /**
-   * Delete le todo s'il existe
-   *
-   * @param todo: Todo
-   * @returns boolean
+   * Updates the status of a Todo
+   */
+  updateTodoStatus(id: number, newStatus: TodoStatus): void {
+    this.todosSignal.update((todos) =>
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, status: newStatus } : todo
+      )
+    );
+  }
+
+  /**
+   * Deletes a Todo if it exists
    */
   deleteTodo(todo: Todo): boolean {
-    const index = this.todos.indexOf(todo);
+    const todos = this.todosSignal();
+    const index = todos.indexOf(todo);
     if (index > -1) {
-      this.todos.splice(index, 1);
+      this.todosSignal.update((todos) => todos.filter((_, i) => i !== index));
       return true;
     }
     return false;
   }
 
   /**
-   * Logger la liste des todos
+   * Logs the current list of todos
    */
-  logTodos() {
-    this.loggerService.logger(this.todos);
+  logTodos(): void {
+    this.loggerService.logger(this.todosSignal());
+  }
+
+  /**
+   * Clears all Todos
+   */
+  clearTodos(): void {
+    this.todosSignal.set([]);
   }
 }

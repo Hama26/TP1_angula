@@ -1,18 +1,107 @@
 <div class="row">
-  <div class="col">
-    <ol class="list-group">
-      @for (todo of todos; track todo) {
-        <li class="list-group-item">
-          {{todo.name}} : {{todo.content}}
-          <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
-        </li>
-      }
-    </ol>
+  <!-- Add Todo Form -->
+  <div class="col-12 mb-4">
+    <h3>Add Todo</h3>
+    <div class="form-group">
+      <label for="todoName">Name:</label>
+      <input
+        id="todoName"
+        [(ngModel)]="newName"
+        type="text"
+        class="form-control mb-2"
+        placeholder="Enter todo name"
+      />
+      <label for="todoContent">Content:</label>
+      <input
+        id="todoContent"
+        [(ngModel)]="newContent"
+        type="text"
+        class="form-control mb-2"
+        placeholder="Enter todo content"
+      />
+      <button
+        (click)="addTodo()"
+        [disabled]="!newName.trim() || !newContent.trim()"
+        class="btn btn-primary mt-2"
+      >
+        Add
+      </button>
+    </div>
   </div>
-  <div class="col">
-    name: <input [(ngModel)]="todo.name" type="text" class="form-control">
-    content: <input [(ngModel)]="todo.content" type="text" class="form-control">
-    <button (click)="addTodo()" [disabled]="!todo.name.trim() || !todo.content.trim()"
-    class="btn btn-primary m-2">add</button>
+
+  <!-- Status Columns -->
+  <div class="row">
+    <!-- Waiting Todos -->
+    <div class="col">
+      <h3>Waiting</h3>
+      <ol class="list-group">
+        <li
+          *ngFor="let todo of waitingTodos()"
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <span>{{ todo.name }}: {{ todo.content }}</span>
+          <div>
+            <button
+              (click)="changeStatus(todo, 'in progress')"
+              class="btn btn-sm btn-warning"
+            >
+              Move to In Progress
+            </button>
+            <i
+              (click)="deleteTodo(todo)"
+              class="fa fa-trash text-danger"
+              aria-hidden="true"
+              style="cursor: pointer; margin-left: 10px;"
+            ></i>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- In Progress Todos -->
+    <div class="col">
+      <h3>In Progress</h3>
+      <ol class="list-group">
+        <li
+          *ngFor="let todo of inProgressTodos()"
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <span>{{ todo.name }}: {{ todo.content }}</span>
+          <div>
+            <button
+              (click)="changeStatus(todo, 'done')"
+              class="btn btn-sm btn-success"
+            >
+              Move to Done
+            </button>
+            <i
+              (click)="deleteTodo(todo)"
+              class="fa fa-trash text-danger"
+              aria-hidden="true"
+              style="cursor: pointer; margin-left: 10px;"
+            ></i>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Done Todos -->
+    <div class="col">
+      <h3>Done</h3>
+      <ol class="list-group">
+        <li
+          *ngFor="let todo of doneTodos()"
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <span>{{ todo.name }}: {{ todo.content }}</span>
+          <i
+            (click)="deleteTodo(todo)"
+            class="fa fa-trash text-danger"
+            aria-hidden="true"
+            style="cursor: pointer;"
+          ></i>
+        </li>
+      </ol>
+    </div>
   </div>
 </div>

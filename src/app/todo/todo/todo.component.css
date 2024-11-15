@@ -1,0 +1,91 @@
+/* General Container Styling */
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Row and Columns */
+  .row {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+  }
+  
+  /* Todo List Styling */
+  .list-group {
+    padding: 0;
+    list-style: none;
+  }
+  
+  .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #ffffff;
+  }
+  
+  .list-group-item:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Add Todo Inputs and Button */
+  input.form-control {
+    margin-bottom: 10px;
+  }
+  
+  button.btn {
+    margin-top: 5px;
+  }
+  
+  /* Buttons for Status Changes */
+  .btn-warning {
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+    padding: 5px 10px;
+  }
+  
+  .btn-success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+    padding: 5px 10px;
+  }
+  
+  .btn-danger {
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d9534f;
+    padding: 5px 10px;
+  }
+  
+  /* Trash Icon Styling */
+  .fa-trash {
+    color: #d9534f;
+    cursor: pointer;
+  }
+  
+  .fa-trash:hover {
+    color: #a94442;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column;
+    }
+  
+    .col {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+  
