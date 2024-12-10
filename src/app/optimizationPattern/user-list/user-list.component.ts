@@ -1,21 +1,17 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {User} from "../users.service";
 import { FormsModule } from '@angular/forms';
+import { FiboPipe } from 'src/app/cv/pipes/fibo.pipe';
+import { CommonModule } from '@angular/common';
 
-
-export const fibonnaci = (n: number): number => {
-  if (n==1 || n==0) {
-    return 1;
-  }
-  return fibonnaci(n-1) + fibonnaci(n-2);
-}
 
 @Component({
     selector: 'app-user-list',
     templateUrl: './user-list.component.html',
     styleUrls: ['./user-list.component.css'],
     standalone: true,
-    imports: [FormsModule]
+    imports: [FormsModule, FiboPipe, CommonModule],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserListComponent {
   @Input() usersCluster: string = '';
@@ -26,10 +22,8 @@ export class UserListComponent {
     this.add.emit(this.userFullName);
     this.userFullName = '';
   }
-  fibo(n: number): number {
-    const fib = fibonnaci(n);
-    console.log({n, fib});
 
-    return fib;
+  trackUser(index: number, user: User) {
+    return user.name; // Assumes names are unique enough; otherwise use a unique ID
   }
 }

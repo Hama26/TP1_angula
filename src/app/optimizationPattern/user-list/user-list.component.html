@@ -8,10 +8,10 @@
   </div>
 </div>
 <ol class="list-group">
-  @for (user of users; track user) {
-    <li
-      class="list-group-item">
-      {{user.name}} : {{user.age}} [{{fibo(user.age)}}]
-    </li>
-  }
+  <li
+    class="list-group-item"
+    *ngFor="let user of users; trackBy: trackUser">
+    {{user.name}} : {{user.age}} [{{user.age | fiboPipe}}]
+  </li>
 </ol>
+
