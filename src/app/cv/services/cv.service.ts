@@ -61,15 +61,7 @@ export class CvService {
   }
 
   addCv(cv: Cv): Observable<Cv> {
-    // Retrieve token from wherever it is stored (e.g., localStorage)
-    const token = localStorage.getItem('token');
-
-    console.log('Token:', token);
-
-    // Set the authorization header
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    return this.http.post<Cv>(API.cv, cv, { headers });
+    return this.http.post<Cv>(API.cv, cv);
   }
 
   /**
