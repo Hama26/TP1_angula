@@ -1,7 +1,7 @@
 import { Injectable, inject } from "@angular/core";
 import { Cv } from "../model/cv";
 import { Observable, Subject } from "rxjs";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { API } from "../../../config/api.config";
 
 @Injectable({
@@ -61,7 +61,15 @@ export class CvService {
   }
 
   addCv(cv: Cv): Observable<Cv> {
-    return this.http.post<any>(API.cv, cv);
+    // Retrieve token from wherever it is stored (e.g., localStorage)
+    const token = localStorage.getItem('token');
+
+    console.log('Token:', token);
+
+    // Set the authorization header
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<Cv>(API.cv, cv, { headers });
   }
 
   /**
@@ -113,6 +121,19 @@ export class CvService {
     const params = new HttpParams().set("filter", search);
     return this.http.get<any>(API.cv, { params });
   }
+
+  /**
+   * Recherche les cvs dont le name contient la chaine name passée en paramètre
+   * @param cin : string
+   * @returns cvs Cv[]
+   */
+  selectByCin(cin: string) {
+    const search = `{"where":{"cin":{"like":"%${cin}%"}}}`;
+    const params = new HttpParams().set("filter", search);
+    return this.http.get<any>(API.cv, { params });
+  }
+
+
   /**
    * Recherche les cvs dont la valeur est égale à la chaine passée en paramètre
    * @param property : string, la propriété sur laquelle on va requeter
